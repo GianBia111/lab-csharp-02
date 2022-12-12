@@ -7,6 +7,7 @@ namespace ExtensionMethods
     {
         private readonly double re;
         private readonly double im;
+        public static double Tollerance { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Complex"/> class.
@@ -20,40 +21,16 @@ namespace ExtensionMethods
         }
 
         /// <inheritdoc cref="IComplex.Real"/>
-        public double Real
-        {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
-        }
+        public double Real => this.Real;
 
         /// <inheritdoc cref="IComplex.Imaginary"/>
-        public double Imaginary
-        {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
-        }
+        public double Imaginary => this.Imaginary;
 
         /// <inheritdoc cref="IComplex.Modulus"/>
-        public double Modulus
-        {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
-        }
+        public double Modulus => Math.Sqrt(this.re * this.re + this.im * this.im);
 
         /// <inheritdoc cref="IComplex.Phase"/>
-        public double Phase
-        {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
-        }
+        public double Phase => Math.Atan2(this.im, this.re);
 
         /// <inheritdoc cref="IComplex.ToString"/>
         public override string ToString()
@@ -65,21 +42,24 @@ namespace ExtensionMethods
         /// <inheritdoc cref="IEquatable{T}.Equals(T)"/>
         public bool Equals(IComplex other)
         {
-            throw new System.NotImplementedException();
+            return other != null && (this.Imaginary - other.Imaginary) < Complex.Tollerance && this.Real == other.Real;
         }
 
         /// <inheritdoc cref="object.Equals(object?)"/>
         public override bool Equals(object obj)
         {
-            // TODO improve
-            return base.Equals(obj);
+            if(obj is IComplex)
+            {
+                return this.Equals((IComplex)obj);
+            }
+
+            return false;
         }
 
         /// <inheritdoc cref="object.GetHashCode"/>
         public override int GetHashCode()
         {
-            // TODO improve
-            return base.GetHashCode();
+            return HashCode.Combine(this.re, this.im);
         }
     }
 }
