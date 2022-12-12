@@ -6,27 +6,58 @@ namespace Collections
     public class SocialNetworkUser<TUser> : User, ISocialNetworkUser<TUser>
         where TUser : IUser
     {
+
+        private Dictionary<string, List<TUser>> _groups = new Dictionary<string, List<TUser>>();
+
+
         public SocialNetworkUser(string fullName, string username, uint? age) : base(fullName, username, age)
         {
-            throw new NotImplementedException("TODO is there anything to do here?");
+        
         }
 
         public bool AddFollowedUser(string group, TUser user)
         {
-            throw new NotImplementedException("TODO add user to the provided group. Return false if the user was already in the group");
+            if (this._groups.ContainsKey(group))
+            {
+                List<TUser> list = this._groups[group];
+                list.Add(user);
+                this._groups[group] = list;
+            }
+            else
+            {
+                List<TUser> list = new List<TUser>();
+                list.Add(user);
+                this._groups.Add(group, list);
+            }
+
+            return true;
         }
 
         public IList<TUser> FollowedUsers
         {
             get
             {
-                throw new NotImplementedException("TODO construct and return the list of all users followed by the current users, in all groups");
+                IList<TUser> li = new List<TUser>();
+
+                foreach (List<TUser> list in this._groups.Values)
+                    foreach (TUser user in list)
+                        li.Add(user);
+
+                return li;
+                  
             }
         }
 
         public ICollection<TUser> GetFollowedUsersInGroup(string group)
         {
-            throw new NotImplementedException("TODO construct and return a collection containing of all users followed by the current users, in group");
+            if (this._groups.ContainsKey(group))
+            {
+                return this._groups[group];
+            }
+            else
+            {
+                return new List<TUser>();
+            }
         }
     }
 }

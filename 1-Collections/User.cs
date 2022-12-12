@@ -4,19 +4,20 @@ namespace Collections
 {
     public class User : IUser
     {
+        public string FullName { get; private set; }
+        public uint? Age { get; private set; }
+
+        public string Username { get; private set; }
+
         public User(string fullName, string username, uint? age)
         {
-            throw new NotImplementedException("TODO ensure that username is not null");
-            throw new NotImplementedException("TODO initialise this instance of user accordingly");
+            this.FullName = FullName;
+            this.Username = username;
+            this.Age = age;
         }
-        
-        public uint? Age { get; }
-        
-        public string FullName { get; }
-        
-        public string Username { get; }
 
-        public bool IsAgeDefined => throw new NotImplementedException("TODO check whether age is non-null or not");
+
+        public bool IsAgeDefined => Age.HasValue;
         
         // TODO implement missing methods (try to autonomously figure out which are the necessary methods)
     }
